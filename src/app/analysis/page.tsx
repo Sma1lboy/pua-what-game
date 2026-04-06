@@ -2,6 +2,10 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { ArrowLeft, ChevronDown } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
 
 interface TacticDetail {
   id: string;
@@ -111,80 +115,77 @@ function TacticCard({ tactic }: { tactic: TacticDetail }) {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <div
-      className={`bg-white border border-gray-200 rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-md hover:border-gray-300 ${
-        expanded ? 'shadow-sm' : ''
+    <Card
+      className={`transition-all duration-300 hover:ring-foreground/20 ${
+        expanded ? 'ring-foreground/15' : ''
       }`}
     >
-      <button
-        onClick={() => setExpanded(!expanded)}
-        className="w-full flex items-center gap-4 px-5 py-4 text-left"
-      >
-        <span className="text-2xl shrink-0">{tactic.emoji}</span>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-baseline gap-2">
-            <span className="text-gray-900 font-bold">{tactic.nameCn}</span>
-            <span className="text-gray-400 text-sm">{tactic.nameEn}</span>
+      <CardContent className="p-0">
+        <button
+          onClick={() => setExpanded(!expanded)}
+          className="w-full flex items-center gap-4 px-5 py-4 text-left"
+        >
+          <span className="text-2xl shrink-0">{tactic.emoji}</span>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-baseline gap-2">
+              <span className="text-foreground font-bold">{tactic.nameCn}</span>
+              <span className="text-muted-foreground text-sm">{tactic.nameEn}</span>
+            </div>
+            <p className="text-muted-foreground text-xs mt-0.5 truncate">{tactic.definition}</p>
           </div>
-          <p className="text-gray-400 text-xs mt-0.5 truncate">{tactic.definition}</p>
-        </div>
-        <span className={`text-gray-400 transition-transform duration-300 shrink-0 ${expanded ? 'rotate-180' : ''}`}>
-          ▼
-        </span>
-      </button>
+          <ChevronDown
+            className={`size-4 text-muted-foreground transition-transform duration-300 shrink-0 ${expanded ? 'rotate-180' : ''}`}
+          />
+        </button>
 
-      {expanded && (
-        <div className="px-5 pb-5 space-y-4 animate-fadeIn">
-          <div className="h-px bg-gray-100" />
+        {expanded && (
+          <div className="px-5 pb-5 space-y-4 animate-fadeIn">
+            <Separator />
 
-          <div className="space-y-3">
-            <div>
-              <h4 className="text-gray-500 text-xs font-medium uppercase tracking-wider mb-1">定义</h4>
-              <p className="text-gray-700 text-sm leading-relaxed">{tactic.definition}</p>
-            </div>
+            <div className="space-y-3">
+              <div>
+                <h4 className="text-muted-foreground text-xs font-medium uppercase tracking-wider mb-1">定义</h4>
+                <p className="text-foreground/80 text-sm leading-relaxed">{tactic.definition}</p>
+              </div>
 
-            <div>
-              <h4 className="text-gray-500 text-xs font-medium uppercase tracking-wider mb-1">例子</h4>
-              <p className="text-gray-700 text-sm leading-relaxed bg-gray-50 rounded-xl px-3 py-2 border-l-2 border-gray-300">
-                {tactic.example}
-              </p>
-            </div>
+              <div>
+                <h4 className="text-muted-foreground text-xs font-medium uppercase tracking-wider mb-1">例子</h4>
+                <p className="text-foreground/80 text-sm leading-relaxed bg-muted/50 rounded-xl px-3 py-2 border-l-2 border-border">
+                  {tactic.example}
+                </p>
+              </div>
 
-            <div>
-              <h4 className="text-amber-600 text-xs font-medium uppercase tracking-wider mb-1">🔍 如何识别</h4>
-              <p className="text-gray-700 text-sm leading-relaxed">{tactic.howToIdentify}</p>
-            </div>
+              <div>
+                <h4 className="text-amber-600 text-xs font-medium uppercase tracking-wider mb-1">🔍 如何识别</h4>
+                <p className="text-foreground/80 text-sm leading-relaxed">{tactic.howToIdentify}</p>
+              </div>
 
-            <div>
-              <h4 className="text-green-600 text-xs font-medium uppercase tracking-wider mb-1">🛡️ 如何应对</h4>
-              <p className="text-gray-700 text-sm leading-relaxed">{tactic.howToRespond}</p>
+              <div>
+                <h4 className="text-green-600 text-xs font-medium uppercase tracking-wider mb-1">🛡️ 如何应对</h4>
+                <p className="text-foreground/80 text-sm leading-relaxed">{tactic.howToRespond}</p>
+              </div>
             </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </CardContent>
+    </Card>
   );
 }
 
 export default function AnalysisPage() {
   return (
-    <main
-      className="min-h-screen bg-white px-4 py-12"
-      style={{ fontFamily: 'Inter, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif' }}
-    >
+    <main className="min-h-screen bg-background px-4 py-12">
       <div className="max-w-3xl mx-auto">
         {/* Back link */}
-        <Link
-          href="/"
-          className="inline-flex items-center gap-1 text-gray-400 hover:text-gray-600 text-sm mb-8 transition-colors"
-        >
-          ← 返回主页
-        </Link>
+        <Button variant="ghost" size="sm" render={<Link href="/" />} className="mb-8 text-muted-foreground">
+          <ArrowLeft className="size-4" />
+          返回主页
+        </Button>
 
         {/* Header */}
         <div className="text-center mb-10 animate-fadeIn">
-          <h1 className="text-3xl font-bold text-gray-900 mb-3">PUA手法解析</h1>
-          <p className="text-gray-500 text-sm leading-relaxed max-w-md mx-auto">
+          <h1 className="text-3xl font-bold text-foreground mb-3">PUA手法解析</h1>
+          <p className="text-muted-foreground text-sm leading-relaxed max-w-md mx-auto">
             了解常见的9种PUA操控手法，学会识别和应对，保护自己和身边的人
           </p>
         </div>
@@ -198,13 +199,10 @@ export default function AnalysisPage() {
 
         {/* Bottom CTA */}
         <div className="text-center mt-12 space-y-3">
-          <Link
-            href="/play"
-            className="inline-block px-8 py-3 bg-gray-900 hover:bg-gray-800 text-white font-semibold rounded-full transition-colors shadow-sm"
-          >
+          <Button size="lg" render={<Link href="/play" />}>
             开始游戏，实战练习
-          </Link>
-          <p className="text-gray-400 text-xs">通过互动游戏体验，更深刻地理解这些操控手法</p>
+          </Button>
+          <p className="text-muted-foreground text-xs">通过互动游戏体验，更深刻地理解这些操控手法</p>
         </div>
       </div>
     </main>
