@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: #fafafa;
+  --color-foreground: #171717;
+}
+
+/* Custom animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out both;
+}
+
+.animate-slideUp {
+  animation: slideUp 0.3s ease-out both;
+}
+
+/* Phone mockup responsive scaling */
+.phone-mockup-wrapper {
+  width: 100%;
+  max-width: 390px;
+  margin: 0 auto;
+}
+
+.phone-mockup-inner {
+  position: relative;
+  width: 390px;
+  height: 844px;
+  transform-origin: top left;
+}
+
+@media (max-width: 420px) {
+  .phone-mockup-wrapper {
+    width: calc(100vw - 32px);
+  }
+
+  .phone-mockup-inner {
+    transform: scale(calc((100vw - 32px) / 390));
+  }
+
+  .phone-mockup-wrapper {
+    height: calc(844px * ((100vw - 32px) / 390));
+  }
+}
+
+/* Typing indicator animation */
+@keyframes typingDot {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30% { transform: translateY(-4px); opacity: 1; }
+}
+
+.animate-typing-dot {
+  animation: typingDot 1.4s ease-in-out infinite;
+}
+
+/* Hide scrollbar */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
