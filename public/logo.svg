@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <rect width="512" height="512" rx="128" fill="#000"/>
+  <!-- Chat bubble outline -->
+  <path d="M136 160h240c17.7 0 32 14.3 32 32v128c0 17.7-14.3 32-32 32H248l-64 48v-48h-48c-17.7 0-32-14.3-32-32V192c0-17.7 14.3-32 32-32z" stroke="#fff" stroke-width="16" fill="none" stroke-linejoin="round"/>
+  <!-- Question mark -->
+  <text x="256" y="300" text-anchor="middle" font-family="Inter, -apple-system, sans-serif" font-size="120" font-weight="800" fill="#fff">?!</text>
+</svg>

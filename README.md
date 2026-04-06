@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PUA话术识别 — 聊天模拟器
+
+An interactive WeChat-style chat simulator that teaches you to recognize 9 common PUA (Pick-Up Artist) manipulation tactics through immersive storytelling.
+
+![Home](public/screenshots/home-desktop.png)
+
+## Screenshots
+
+<p align="center">
+  <img src="public/screenshots/home.png" width="200" />
+  <img src="public/screenshots/play.png" width="200" />
+  <img src="public/screenshots/analysis.png" width="200" />
+  <img src="public/screenshots/generator.png" width="200" />
+</p>
+
+## Features
+
+- **33 story nodes** with multiple branching paths and 4 distinct endings
+- **WeChat-style chat UI** with typing indicators, avatars, and phone mockup
+- **9 PUA tactics** identified in real-time as you play (gaslighting, future faking, triangulation, etc.)
+- **4-stat system** tracking affection, alertness, money, and social circle
+- **LLM story generator** — paste a prompt into ChatGPT/Claude to create custom scenarios
+- **Analysis page** breaking down each tactic with examples and counter-strategies
+
+## Tech Stack
+
+- Next.js 16 + React 19
+- Tailwind CSS 4 + shadcn/ui
+- TypeScript
+- Threads-inspired minimal design (black/white, thin borders, Lucide icons)
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+git clone https://github.com/Sma1lboy/pua-what-game.git
+cd pua-what-game
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## How It Was Built
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+This project was scaffolded and iteratively redesigned using the [autonomous-skill](https://github.com/anthropics/claude-code) workflow for Claude Code. The entire UI redesign (shadcn/ui integration, Threads aesthetic, all 4 page redesigns) was completed autonomously across 4 sprints by an AI conductor dispatching sprint masters and workers, with zero manual code edits.
 
-## Learn More
+## License
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT
