@@ -1,30 +1,28 @@
 'use client';
 
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { Message, Choice, Story, GameState, DialogNode } from '@/types/chat';
+import { Message, Choice, Story, GameState, DialogNode, GameStats, EncounteredTactic } from '@/types/chat';
+import { createInitialState, applyChoice, getCurrentNode, isEndingNode, finalizeGame, getEndingInfo } from '@/lib/game-engine';
 import ChatBubble from './ChatBubble';
 import TypingIndicator from './TypingIndicator';
 import ChoicePanel from './ChoicePanel';
 
 interface ChatScreenProps {
   story: Story;
+  onStatsChange?: (stats: GameStats, tactics: EncounteredTactic[], progress: number) => void;
 }
 
-export default function ChatScreen({ story }: ChatScreenProps) {
-  const [gameState, setGameState] = useState<GameState>({
-    currentNodeId: story.startNodeId,
-    score: 0,
-    mood: 50,
-    history: [],
-  });
+export default function ChatScreen({ story, onStatsChange }: ChatScreenProps) {
+  const [gameState, setGameState] = useState<GameState>(() => createInitialState(story));
   const [displayedMessages, setDisplayedMessages] = useState<Message[]>([]);
   const [isTyping, setIsTyping] = useState(false);
   const [showChoices, setShowChoices] = useState(false);
   const [isEnded, setIsEnded] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const hasStarted = useRef(false);
+  const nodesMsgCount = useRef(0);
 
-  const currentNode: DialogNode | undefined = story.nodes[gameState.currentNodeId];
+  const currentNode: DialogNode | undefined = getCurrentNode(gameState, story);
 
   const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -34,20 +32,46 @@ export default function ChatScreen({ story }: ChatScreenProps) {
     scrollToBottom();
   }, [displayedMessages, isTyping, scrollToBottom]);
 
+  // Notify parent of stat changes
+  useEffect(() => {
+    if (onStatsChange) {
+      nodesMsgCount.current += 1;
+      const totalNodes = Object.keys(story.nodes).length;
+      const progress = Math.min(100, Math.round((nodesMsgCount.current / totalNodes) * 100));
+      onStatsChange(gameState.stats, gameState.encounteredTactics, progress);
+    }
+  }, [gameState.stats, gameState.encounteredTactics, onStatsChange, story.nodes]);
+
   // Play through NPC messages for the current node
   const playNodeMessages = useCallback(
-    (node: DialogNode, existingHistory: Message[]) => {
-      const npcMessages = node.messages.filter((m) => m.sender === 'npc');
+    (node: DialogNode, addTacticAlert: boolean) => {
+      const npcMessages = node.messages.filter((m) => m.sender === 'npc' || m.sender === 'system');
+
+      // If this node has a tactic and we should show it, add alert first
+      const allMessages = [...npcMessages];
+      if (addTacticAlert && node.tacticId && node.tacticExplanation) {
+        allMessages.push({
+          id: `tactic-${node.id}-${Date.now()}`,
+          sender: 'system',
+          content: node.tacticExplanation,
+          timestamp: 0,
+          type: 'tactic-alert',
+        });
+      }
+
       let delay = 400;
 
-      npcMessages.forEach((msg, index) => {
-        // Show typing
-        setTimeout(() => {
-          setIsTyping(true);
-        }, delay);
+      allMessages.forEach((msg, index) => {
+        // Show typing for npc messages
+        if (msg.sender === 'npc') {
+          setTimeout(() => {
+            setIsTyping(true);
+          }, delay);
+          delay += 600 + Math.min(msg.content.length * 30, 1500);
+        } else {
+          delay += 300;
+        }
 
-        // Show message
-        delay += 800 + msg.content.length * 40;
         const currentDelay = delay;
 
         setTimeout(() => {
@@ -59,29 +83,23 @@ export default function ChatScreen({ story }: ChatScreenProps) {
             history: [...prev.history, newMsg],
           }));
 
-          // After last NPC message, show choices or auto-advance
-          if (index === npcMessages.length - 1) {
+          // After last message, show choices or auto-advance or end
+          if (index === allMessages.length - 1) {
             setTimeout(() => {
               if (node.choices.length > 0) {
                 setShowChoices(true);
               } else if (node.nextNodeId) {
-                // Auto-advance to next node
                 const nextNode = story.nodes[node.nextNodeId];
                 if (nextNode) {
                   setGameState((prev) => ({
                     ...prev,
                     currentNodeId: node.nextNodeId!,
                   }));
-                  playNodeMessages(nextNode, [
-                    ...existingHistory,
-                    ...npcMessages.map((m) => ({
-                      ...m,
-                      id: `${m.id}-${Date.now()}`,
-                      timestamp: Date.now(),
-                    })),
-                  ]);
+                  playNodeMessages(nextNode, true);
                 }
               } else {
+                // Ending node
+                setGameState((prev) => finalizeGame(prev));
                 setIsEnded(true);
               }
             }, 500);
@@ -98,7 +116,7 @@ export default function ChatScreen({ story }: ChatScreenProps) {
   useEffect(() => {
     if (hasStarted.current || !currentNode) return;
     hasStarted.current = true;
-    playNodeMessages(currentNode, []);
+    playNodeMessages(currentNode, false);
   }, [currentNode, playNodeMessages]);
 
   const handleChoice = (choice: Choice) => {
@@ -114,29 +132,26 @@ export default function ChatScreen({ story }: ChatScreenProps) {
     };
 
     setDisplayedMessages((prev) => [...prev, userMsg]);
-    setGameState((prev) => ({
-      ...prev,
-      currentNodeId: choice.nextNodeId,
-      score: prev.score + (choice.effect?.score ?? 0),
-      mood: Math.max(0, Math.min(100, prev.mood + (choice.effect?.mood ?? 0))),
-      history: [...prev.history, userMsg],
-    }));
+
+    // Apply choice through engine
+    setGameState((prev) => {
+      const newState = applyChoice(prev, choice, story);
+      return {
+        ...newState,
+        history: [...prev.history, userMsg],
+      };
+    });
 
     // Play next node
     const nextNode = story.nodes[choice.nextNodeId];
     if (nextNode) {
       setTimeout(() => {
-        playNodeMessages(nextNode, [...gameState.history, userMsg]);
+        playNodeMessages(nextNode, true);
       }, 600);
     }
   };
 
-  const getEndingLabel = (): string => {
-    if (gameState.score >= 30) return '🎉 完美结局';
-    if (gameState.score >= 10) return '😊 不错的开始';
-    if (gameState.score >= 0) return '😐 普通结局';
-    return '💔 社死现场';
-  };
+  const endingInfo = gameState.ending ? getEndingInfo(gameState.ending) : null;
 
   return (
     <div className="flex flex-col h-full bg-[#ededed]">
@@ -153,7 +168,7 @@ export default function ChatScreen({ story }: ChatScreenProps) {
             fontFamily: '"PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif',
           }}
         >
-          小雨
+          {story.npcName}
         </span>
         <button className="text-gray-700 p-1">
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -179,6 +194,29 @@ export default function ChatScreen({ story }: ChatScreenProps) {
         </div>
 
         {displayedMessages.map((msg, index) => {
+          if (msg.type === 'tactic-alert') {
+            return (
+              <div key={msg.id} className="px-3 py-2 animate-fadeIn">
+                <div className="bg-amber-50 border border-amber-300 rounded-xl px-4 py-3 text-[13px] text-amber-900 leading-relaxed shadow-sm"
+                  style={{ fontFamily: '"PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif' }}
+                >
+                  {msg.content}
+                </div>
+              </div>
+            );
+          }
+          if (msg.sender === 'system') {
+            return (
+              <div key={msg.id} className="text-center px-4 py-1 animate-fadeIn">
+                <span
+                  className="text-[12px] text-gray-500 leading-relaxed"
+                  style={{ fontFamily: '"PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif' }}
+                >
+                  {msg.content}
+                </span>
+              </div>
+            );
+          }
           const prevMsg = index > 0 ? displayedMessages[index - 1] : null;
           const showAvatar = !prevMsg || prevMsg.sender !== msg.sender;
           return <ChatBubble key={msg.id} message={msg} showAvatar={showAvatar} />;
@@ -186,18 +224,24 @@ export default function ChatScreen({ story }: ChatScreenProps) {
 
         {isTyping && <TypingIndicator />}
 
-        {isEnded && (
+        {isEnded && endingInfo && (
           <div className="text-center py-4 animate-fadeIn">
             <div
-              className="inline-block bg-white/80 rounded-xl px-5 py-3 shadow-sm"
+              className="inline-block bg-white/90 rounded-2xl px-6 py-4 shadow-md"
               style={{
                 fontFamily: '"PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif',
               }}
             >
-              <p className="text-lg mb-1">{getEndingLabel()}</p>
-              <p className="text-xs text-gray-500">
-                得分: {gameState.score} | 好感度: {gameState.mood}
+              <p className="text-2xl mb-1">{endingInfo.emoji}</p>
+              <p className="text-lg font-bold text-gray-900 mb-2">{endingInfo.title}</p>
+              <p className="text-xs text-gray-600 leading-relaxed max-w-[260px]">
+                {endingInfo.description}
               </p>
+              <div className="mt-3 pt-3 border-t border-gray-200 text-[11px] text-gray-400 space-y-1">
+                <p>好感度: {gameState.stats.affection} | 警觉度: {gameState.stats.alertness}</p>
+                <p>金钱: {gameState.stats.money}元 | 社交圈: {gameState.stats.socialCircle}</p>
+                <p>识别PUA手法: {gameState.encounteredTactics.length}/9</p>
+              </div>
             </div>
           </div>
         )}
