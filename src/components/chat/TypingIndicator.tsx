@@ -10,9 +10,9 @@ export default function TypingIndicator() {
 
       {/* Bubble with dots */}
       <div className="bg-white rounded-[18px] rounded-bl-[4px] px-4 py-3 flex items-center gap-1">
-        <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:0ms]" />
-        <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:150ms]" />
-        <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:300ms]" />
+        <span className="w-2 h-2 bg-gray-400 rounded-full animate-typing-dot" />
+        <span className="w-2 h-2 bg-gray-400 rounded-full animate-typing-dot [animation-delay:0.2s]" />
+        <span className="w-2 h-2 bg-gray-400 rounded-full animate-typing-dot [animation-delay:0.4s]" />
       </div>
     </div>
   );
