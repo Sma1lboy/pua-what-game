@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-background: #0a0a0a;
-  --color-foreground: #ededed;
+  --color-background: #fafafa;
+  --color-foreground: #171717;
 }
 
 /* Custom animations */

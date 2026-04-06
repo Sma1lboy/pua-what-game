@@ -10,17 +10,17 @@ import { GameStats, EncounteredTactic, GameState, PUA_TACTICS, Story } from '@/t
 import { getEndingInfo } from '@/lib/game-engine';
 
 const endingColors: Record<string, string> = {
-  awakened: 'text-green-400',
-  hesitant: 'text-yellow-400',
-  trapped: 'text-orange-400',
-  controlled: 'text-red-400',
+  awakened: 'text-green-600',
+  hesitant: 'text-yellow-600',
+  trapped: 'text-orange-600',
+  controlled: 'text-red-600',
 };
 
 const endingBorderColors: Record<string, string> = {
-  awakened: 'border-green-500/50',
-  hesitant: 'border-yellow-500/50',
-  trapped: 'border-orange-500/50',
-  controlled: 'border-red-500/50',
+  awakened: 'border-green-300',
+  hesitant: 'border-yellow-300',
+  trapped: 'border-orange-300',
+  controlled: 'border-red-300',
 };
 
 function StatBarFinal({ label, value, max, color }: { label: string; value: number; max: number; color: string }) {
@@ -28,10 +28,10 @@ function StatBarFinal({ label, value, max, color }: { label: string; value: numb
   return (
     <div className="space-y-1">
       <div className="flex justify-between text-xs">
-        <span className="text-gray-300">{label}</span>
-        <span className="text-white font-medium">{value}{max > 100 ? '元' : ''}</span>
+        <span className="text-gray-500">{label}</span>
+        <span className="text-gray-900 font-medium">{value}{max > 100 ? '元' : ''}</span>
       </div>
-      <div className="h-2 bg-gray-700 rounded-full overflow-hidden">
+      <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
         <div className={`h-full rounded-full ${color}`} style={{ width: `${pct}%` }} />
       </div>
     </div>
@@ -89,15 +89,15 @@ export default function PlayPage() {
 
   return (
     <main
-      className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex flex-col items-center justify-center px-4 py-8 gap-6"
-      style={{ fontFamily: '"PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif' }}
+      className="min-h-screen bg-[#f5f5f5] flex flex-col items-center justify-center px-4 py-8 gap-6"
+      style={{ fontFamily: 'Inter, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif' }}
     >
       {/* Title */}
       <div className="text-center space-y-2">
-        <h1 className="text-4xl font-bold text-white tracking-wide">
+        <h1 className="text-4xl font-bold text-gray-900 tracking-tight">
           PUA - 你说什么
         </h1>
-        <p className="text-purple-300/80 text-sm">
+        <p className="text-gray-400 text-sm">
           识别操控，保护自己 — 一款PUA觉醒互动游戏
         </p>
       </div>
@@ -105,7 +105,7 @@ export default function PlayPage() {
       {/* Mobile sidebar toggle */}
       <button
         onClick={() => setShowSidebar(!showSidebar)}
-        className="lg:hidden text-purple-300 text-sm border border-purple-500/30 rounded-full px-4 py-1.5 hover:bg-purple-500/10 transition-colors"
+        className="lg:hidden text-gray-600 text-sm border border-gray-200 rounded-full px-4 py-1.5 hover:bg-gray-100 transition-colors bg-white shadow-sm"
       >
         {showSidebar ? '隐藏状态面板' : '查看状态面板'}
       </button>
@@ -137,9 +137,9 @@ export default function PlayPage() {
 
       {/* End Game Modal */}
       {endState && endingInfo && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm animate-fadeIn">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm animate-fadeIn">
           <div
-            className={`bg-gray-900 border ${endingBorderColors[endState.ending!]} rounded-2xl p-8 max-w-md w-full mx-4 space-y-6 animate-slideUp`}
+            className={`bg-white border ${endingBorderColors[endState.ending!]} rounded-2xl p-8 max-w-md w-full mx-4 space-y-6 shadow-lg animate-slideUp`}
           >
             {/* Ending header */}
             <div className="text-center space-y-2">
@@ -147,7 +147,7 @@ export default function PlayPage() {
               <h2 className={`text-2xl font-bold ${endingColors[endState.ending!]}`}>
                 {endingInfo.title}
               </h2>
-              <p className="text-gray-400 text-sm leading-relaxed">
+              <p className="text-gray-500 text-sm leading-relaxed">
                 {endingInfo.description}
               </p>
             </div>
@@ -170,10 +170,10 @@ export default function PlayPage() {
                 <div className="space-y-1.5 max-h-32 overflow-y-auto scrollbar-hide">
                   {endState.encounteredTactics.map((t) => (
                     <div key={t.tacticId} className="flex items-start gap-2 text-xs">
-                      <span className="text-red-400 shrink-0">⚠️</span>
+                      <span className="text-red-500 shrink-0">⚠️</span>
                       <div>
-                        <span className="text-red-300 font-medium">{PUA_TACTICS[t.tacticId].name}</span>
-                        <span className="text-gray-500 ml-1">— {PUA_TACTICS[t.tacticId].description}</span>
+                        <span className="text-red-600 font-medium">{PUA_TACTICS[t.tacticId].name}</span>
+                        <span className="text-gray-400 ml-1">— {PUA_TACTICS[t.tacticId].description}</span>
                       </div>
                     </div>
                   ))}
@@ -185,19 +185,19 @@ export default function PlayPage() {
             <div className="flex flex-col gap-3">
               <button
                 onClick={handleRestart}
-                className="w-full py-2.5 bg-purple-600 hover:bg-purple-500 text-white font-medium rounded-xl transition-colors"
+                className="w-full py-2.5 bg-gray-900 hover:bg-gray-800 text-white font-medium rounded-full transition-colors"
               >
                 重新开始
               </button>
               <Link
                 href="/analysis"
-                className="w-full py-2.5 bg-white/10 hover:bg-white/20 text-purple-200 font-medium rounded-xl transition-colors text-center border border-purple-500/30"
+                className="w-full py-2.5 bg-white hover:bg-gray-50 text-gray-700 font-medium rounded-full transition-colors text-center border border-gray-200"
               >
                 查看PUA手法解析
               </Link>
               <Link
                 href="/"
-                className="w-full py-2.5 text-gray-400 hover:text-gray-300 text-sm text-center transition-colors"
+                className="w-full py-2.5 text-gray-400 hover:text-gray-600 text-sm text-center transition-colors"
               >
                 返回主页
               </Link>

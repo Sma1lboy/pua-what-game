@@ -25,10 +25,10 @@ function StatBar({ label, value, max, color, suffix }: {
   return (
     <div className="space-y-1">
       <div className="flex justify-between text-xs">
-        <span className="text-gray-300">{label}</span>
-        <span className="text-white font-medium">{value}{suffix}</span>
+        <span className="text-gray-500">{label}</span>
+        <span className="text-gray-900 font-medium">{value}{suffix}</span>
       </div>
-      <div className="h-2 bg-gray-700 rounded-full overflow-hidden">
+      <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
         <div
           className={`h-full rounded-full transition-all duration-500 ${color}`}
           style={{ width: `${pct}%` }}
@@ -42,24 +42,24 @@ export default function ScoreSidebar({ stats, encounteredTactics, progress }: Sc
   const encounteredIds = new Set(encounteredTactics.map((t) => t.tacticId));
 
   return (
-    <div className="w-72 bg-gray-900/80 backdrop-blur-sm rounded-2xl border border-gray-700/50 p-5 space-y-6 h-fit max-h-[844px] overflow-y-auto scrollbar-hide"
-      style={{ fontFamily: '"PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif' }}
+    <div className="w-72 bg-white rounded-2xl border border-gray-200 shadow-sm p-5 space-y-6 h-fit max-h-[844px] overflow-y-auto scrollbar-hide"
+      style={{ fontFamily: 'Inter, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif' }}
     >
       {/* Title */}
       <div>
-        <h2 className="text-white font-bold text-lg">状态面板</h2>
+        <h2 className="text-gray-900 font-bold text-lg">状态面板</h2>
         <p className="text-gray-400 text-xs mt-1">实时追踪你的处境</p>
       </div>
 
       {/* Progress */}
       <div className="space-y-1">
         <div className="flex justify-between text-xs">
-          <span className="text-gray-300">故事进度</span>
-          <span className="text-white font-medium">{progress}%</span>
+          <span className="text-gray-500">故事进度</span>
+          <span className="text-gray-900 font-medium">{progress}%</span>
         </div>
-        <div className="h-2 bg-gray-700 rounded-full overflow-hidden">
+        <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
           <div
-            className="h-full rounded-full transition-all duration-500 bg-purple-500"
+            className="h-full rounded-full transition-all duration-500 bg-gray-900"
             style={{ width: `${progress}%` }}
           />
         </div>
@@ -87,22 +87,22 @@ export default function ScoreSidebar({ stats, encounteredTactics, progress }: Sc
             return (
               <div
                 key={id}
-                className={`rounded-lg px-3 py-2 text-xs transition-all duration-300 ${
+                className={`rounded-xl px-3 py-2 text-xs transition-all duration-300 ${
                   encountered
-                    ? 'bg-red-900/40 border border-red-700/50'
-                    : 'bg-gray-800/50 border border-gray-700/30'
+                    ? 'bg-red-50 border border-red-200'
+                    : 'bg-gray-50 border border-gray-100'
                 }`}
               >
                 <div className="flex items-center gap-2">
-                  <span className={encountered ? 'text-red-400' : 'text-gray-600'}>
+                  <span className={encountered ? 'text-red-500' : 'text-gray-300'}>
                     {encountered ? '⚠️' : '🔒'}
                   </span>
-                  <span className={encountered ? 'text-red-300 font-medium' : 'text-gray-500'}>
+                  <span className={encountered ? 'text-red-600 font-medium' : 'text-gray-400'}>
                     {tactic.name}
                   </span>
                 </div>
                 {encountered && detail && (
-                  <p className="text-gray-400 mt-1 leading-relaxed text-[11px]">
+                  <p className="text-gray-500 mt-1 leading-relaxed text-[11px]">
                     {tactic.description}
                   </p>
                 )}
