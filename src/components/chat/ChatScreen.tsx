@@ -10,9 +10,10 @@ import ChoicePanel from './ChoicePanel';
 interface ChatScreenProps {
   story: Story;
   onStatsChange?: (stats: GameStats, tactics: EncounteredTactic[], progress: number) => void;
+  onGameEnd?: (state: GameState) => void;
 }
 
-export default function ChatScreen({ story, onStatsChange }: ChatScreenProps) {
+export default function ChatScreen({ story, onStatsChange, onGameEnd }: ChatScreenProps) {
   const [gameState, setGameState] = useState<GameState>(() => createInitialState(story));
   const [displayedMessages, setDisplayedMessages] = useState<Message[]>([]);
   const [isTyping, setIsTyping] = useState(false);
@@ -99,7 +100,11 @@ export default function ChatScreen({ story, onStatsChange }: ChatScreenProps) {
                 }
               } else {
                 // Ending node
-                setGameState((prev) => finalizeGame(prev));
+                setGameState((prev) => {
+                  const finalState = finalizeGame(prev);
+                  onGameEnd?.(finalState);
+                  return finalState;
+                });
                 setIsEnded(true);
               }
             }, 500);
@@ -109,7 +114,7 @@ export default function ChatScreen({ story, onStatsChange }: ChatScreenProps) {
         delay += 200;
       });
     },
-    [story.nodes]
+    [story.nodes, onGameEnd]
   );
 
   // Start the story
