@@ -3,6 +3,10 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { ArrowLeft, Copy, Check, Play } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
 import { Story } from '@/types/chat';
 
 const LLM_PROMPT = `你是一个互动小说作者。请按照以下TypeScript接口定义，生成一个完整的PUA话术识别互动故事JSON。
@@ -141,23 +145,18 @@ export default function GeneratorPage() {
   };
 
   return (
-    <main
-      className="min-h-screen bg-white px-4 py-12"
-      style={{ fontFamily: 'Inter, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif' }}
-    >
+    <main className="min-h-screen bg-background px-4 py-12">
       <div className="max-w-2xl mx-auto">
         {/* Back link */}
-        <Link
-          href="/"
-          className="inline-flex items-center gap-1 text-gray-400 hover:text-gray-600 text-sm mb-8 transition-colors"
-        >
-          ← 返回主页
-        </Link>
+        <Button variant="ghost" size="sm" render={<Link href="/" />} className="mb-8 text-muted-foreground">
+          <ArrowLeft className="size-4" />
+          返回主页
+        </Button>
 
         {/* Header */}
         <div className="text-center mb-10 animate-fadeIn">
-          <h1 className="text-3xl font-bold text-gray-900 mb-3">LLM 剧情生成器</h1>
-          <p className="text-gray-500 text-sm leading-relaxed max-w-md mx-auto">
+          <h1 className="text-3xl font-bold text-foreground mb-3">LLM 剧情生成器</h1>
+          <p className="text-muted-foreground text-sm leading-relaxed max-w-md mx-auto">
             使用任意LLM（如ChatGPT、Claude）生成自定义剧情，然后导入游戏体验
           </p>
         </div>
@@ -165,36 +164,39 @@ export default function GeneratorPage() {
         {/* Step 1: Copy prompt */}
         <div className="space-y-4 mb-10 animate-slideUp">
           <div className="flex items-center gap-3">
-            <span className="shrink-0 w-8 h-8 bg-gray-900 rounded-full flex items-center justify-center text-white font-bold text-sm">1</span>
-            <h2 className="text-gray-900 font-bold text-lg">复制Prompt到LLM</h2>
+            <span className="shrink-0 w-8 h-8 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-bold text-sm">1</span>
+            <h2 className="text-foreground font-bold text-lg">复制Prompt到LLM</h2>
           </div>
 
-          <div className="bg-gray-50 border border-gray-200 rounded-2xl p-4 max-h-64 overflow-y-auto scrollbar-hide">
-            <pre className="text-gray-600 text-xs leading-relaxed whitespace-pre-wrap break-words">
-              {LLM_PROMPT}
-            </pre>
-          </div>
+          <Card className="bg-muted/50">
+            <CardContent className="max-h-64 overflow-y-auto scrollbar-hide">
+              <pre className="text-muted-foreground text-xs leading-relaxed whitespace-pre-wrap break-words">
+                {LLM_PROMPT}
+              </pre>
+            </CardContent>
+          </Card>
 
-          <button
+          <Button
+            size="lg"
+            className="w-full"
+            variant={copied ? 'secondary' : 'default'}
             onClick={handleCopy}
-            className={`w-full py-3 rounded-full font-medium transition-all ${
-              copied
-                ? 'bg-green-600 text-white'
-                : 'bg-gray-900 hover:bg-gray-800 text-white'
-            }`}
           >
-            {copied ? '✓ 已复制到剪贴板' : '一键复制Prompt'}
-          </button>
+            {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
+            {copied ? '已复制到剪贴板' : '一键复制Prompt'}
+          </Button>
         </div>
+
+        <Separator className="mb-10" />
 
         {/* Step 2: Import JSON */}
         <div className="space-y-4 animate-slideUp">
           <div className="flex items-center gap-3">
-            <span className="shrink-0 w-8 h-8 bg-gray-900 rounded-full flex items-center justify-center text-white font-bold text-sm">2</span>
-            <h2 className="text-gray-900 font-bold text-lg">粘贴生成的JSON</h2>
+            <span className="shrink-0 w-8 h-8 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-bold text-sm">2</span>
+            <h2 className="text-foreground font-bold text-lg">粘贴生成的JSON</h2>
           </div>
 
-          <p className="text-gray-500 text-sm">
+          <p className="text-muted-foreground text-sm">
             将LLM生成的JSON粘贴到下方，点击导入即可开始游戏
           </p>
 
@@ -202,22 +204,26 @@ export default function GeneratorPage() {
             value={jsonInput}
             onChange={(e) => { setJsonInput(e.target.value); setError(''); }}
             placeholder='将LLM生成的完整JSON粘贴到这里...'
-            className="w-full h-48 bg-gray-50 border border-gray-200 rounded-2xl p-4 text-gray-700 text-sm font-mono placeholder-gray-400 resize-none focus:outline-none focus:border-gray-400 focus:ring-1 focus:ring-gray-200 transition-colors"
+            className="w-full h-48 bg-muted/50 border border-border rounded-xl p-4 text-foreground text-sm font-mono placeholder-muted-foreground resize-none focus:outline-none focus:border-foreground/30 focus:ring-1 focus:ring-foreground/10 transition-colors"
           />
 
           {error && (
-            <div className="bg-red-50 border border-red-200 rounded-2xl px-4 py-3 text-red-600 text-sm">
-              {error}
-            </div>
+            <Card className="bg-destructive/10 ring-destructive/20">
+              <CardContent className="text-destructive text-sm">
+                {error}
+              </CardContent>
+            </Card>
           )}
 
-          <button
+          <Button
+            size="lg"
+            className="w-full"
             onClick={handleImport}
             disabled={!jsonInput.trim()}
-            className="w-full py-3 bg-gray-900 hover:bg-gray-800 disabled:bg-gray-200 disabled:text-gray-400 text-white font-medium rounded-full transition-all"
           >
+            <Play className="size-4" />
             导入并开始游戏
-          </button>
+          </Button>
         </div>
       </div>
     </main>
