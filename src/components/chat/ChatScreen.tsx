@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { Message, Choice, Story, GameState, DialogNode, GameStats, EncounteredTactic } from '@/types/chat';
 import { createInitialState, applyChoice, getCurrentNode, isEndingNode, finalizeGame, getEndingInfo } from '@/lib/game-engine';
+import { ChevronLeft, Ellipsis, Smile, PlusCircle } from 'lucide-react';
 import ChatBubble from './ChatBubble';
 import TypingIndicator from './TypingIndicator';
 import ChoicePanel from './ChoicePanel';
@@ -161,26 +162,20 @@ export default function ChatScreen({ story, onStatsChange, onGameEnd }: ChatScre
   return (
     <div className="flex flex-col h-full bg-[#ededed]">
       {/* WeChat header */}
-      <div className="flex items-center justify-between px-4 py-2.5 bg-[#ededed] border-b border-gray-300/50">
-        <button className="text-gray-700 p-1">
-          <svg width="10" height="18" viewBox="0 0 10 18" fill="none">
-            <path d="M9 1L1 9l8 8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
+      <div className="flex items-center justify-between px-4 py-2.5 bg-[#ededed] border-b border-border/30">
+        <button className="text-foreground/60 p-1 hover:text-foreground/80 transition-colors">
+          <ChevronLeft className="size-5" />
         </button>
         <span
-          className="text-[17px] font-medium text-gray-900"
+          className="text-[17px] font-medium text-foreground"
           style={{
             fontFamily: '"PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif',
           }}
         >
           {story.npcName}
         </span>
-        <button className="text-gray-700 p-1">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <circle cx="4" cy="10" r="1.5" fill="currentColor" />
-            <circle cx="10" cy="10" r="1.5" fill="currentColor" />
-            <circle cx="16" cy="10" r="1.5" fill="currentColor" />
-          </svg>
+        <button className="text-foreground/60 p-1 hover:text-foreground/80 transition-colors">
+          <Ellipsis className="size-5" />
         </button>
       </div>
 
@@ -189,7 +184,7 @@ export default function ChatScreen({ story, onStatsChange, onGameEnd }: ChatScre
         {/* Time header */}
         <div className="text-center">
           <span
-            className="text-[11px] text-gray-500 bg-gray-300/50 px-2 py-0.5 rounded"
+            className="text-[11px] text-muted-foreground bg-foreground/5 px-2.5 py-0.5 rounded-full"
             style={{
               fontFamily: '"PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif',
             }}
@@ -202,7 +197,7 @@ export default function ChatScreen({ story, onStatsChange, onGameEnd }: ChatScre
           if (msg.type === 'tactic-alert') {
             return (
               <div key={msg.id} className="px-3 py-2 animate-fadeIn">
-                <div className="bg-amber-50 border border-amber-300 rounded-xl px-4 py-3 text-[13px] text-amber-900 leading-relaxed shadow-sm"
+                <div className="bg-amber-50 ring-1 ring-amber-200 rounded-xl px-4 py-3 text-[13px] text-amber-900 leading-relaxed"
                   style={{ fontFamily: '"PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif' }}
                 >
                   {msg.content}
@@ -261,20 +256,13 @@ export default function ChatScreen({ story, onStatsChange, onGameEnd }: ChatScre
 
       {/* WeChat input bar (decorative) */}
       {!showChoices && !isEnded && (
-        <div className="flex items-center gap-2 px-3 py-2 bg-[#f6f6f6] border-t border-gray-300/50">
-          <button className="text-gray-500">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.5" />
-              <path d="M8 9.5a1 1 0 112 0 1 1 0 01-2 0zM14 9.5a1 1 0 112 0 1 1 0 01-2 0z" fill="currentColor" />
-              <path d="M8.5 14s1.5 2 3.5 2 3.5-2 3.5-2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-            </svg>
+        <div className="flex items-center gap-2 px-3 py-2 bg-[#f6f6f6] border-t border-border/30">
+          <button className="text-muted-foreground hover:text-foreground/70 transition-colors">
+            <Smile className="size-5" />
           </button>
-          <div className="flex-1 bg-white rounded-md h-9 border border-gray-200" />
-          <button className="text-gray-500">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.5" />
-              <path d="M12 7v10M7 12h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-            </svg>
+          <div className="flex-1 bg-white rounded-lg h-9 ring-1 ring-border/50" />
+          <button className="text-muted-foreground hover:text-foreground/70 transition-colors">
+            <PlusCircle className="size-5" />
           </button>
         </div>
       )}

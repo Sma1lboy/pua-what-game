@@ -1,6 +1,7 @@
 'use client';
 
 import { Choice } from '@/types/chat';
+import { Button } from '@/components/ui/button';
 
 interface ChoicePanelProps {
   choices: Choice[];
@@ -11,9 +12,9 @@ export default function ChoicePanel({ choices, onSelect }: ChoicePanelProps) {
   if (choices.length === 0) return null;
 
   return (
-    <div className="animate-slideUp bg-gradient-to-t from-[#ededed] to-[#ededed]/95 border-t border-gray-300/50 px-4 py-3 space-y-2">
+    <div className="animate-slideUp bg-gradient-to-t from-[#ededed] to-[#ededed]/95 border-t border-border/50 px-4 py-3 space-y-2">
       <p
-        className="text-xs text-gray-500 text-center mb-2"
+        className="text-xs text-muted-foreground text-center mb-2"
         style={{
           fontFamily:
             '"PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif',
@@ -22,21 +23,18 @@ export default function ChoicePanel({ choices, onSelect }: ChoicePanelProps) {
         选择你的回复
       </p>
       {choices.map((choice) => (
-        <button
+        <Button
           key={choice.id}
+          variant="outline"
           onClick={() => onSelect(choice)}
-          className="w-full px-4 py-2.5 bg-white rounded-full text-[14px] text-gray-800
-                     shadow-sm border border-gray-200/80
-                     hover:bg-gray-50 hover:shadow-md hover:border-purple-300/50
-                     active:scale-[0.98] active:bg-gray-50
-                     transition-all duration-150"
+          className="w-full rounded-full text-[14px] h-auto py-2.5 font-normal bg-white hover:bg-muted/50 active:scale-[0.98] transition-all duration-150"
           style={{
             fontFamily:
               '"PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif',
           }}
         >
           {choice.text}
-        </button>
+        </Button>
       ))}
     </div>
   );
