@@ -27,6 +27,7 @@ export default function ChoicePanel({ choices, onSelect }: ChoicePanelProps) {
           onClick={() => onSelect(choice)}
           className="w-full px-4 py-2.5 bg-white rounded-full text-[14px] text-gray-800
                      shadow-sm border border-gray-200/80
+                     hover:bg-gray-50 hover:shadow-md hover:border-purple-300/50
                      active:scale-[0.98] active:bg-gray-50
                      transition-all duration-150"
           style={{
