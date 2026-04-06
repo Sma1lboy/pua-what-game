@@ -2,16 +2,13 @@
 
 An interactive WeChat-style chat simulator that teaches you to recognize 9 common PUA (Pick-Up Artist) manipulation tactics through immersive storytelling.
 
-![Home](public/screenshots/home-desktop.png)
+![Home](public/screenshots/home.png)
 
 ## Screenshots
 
-<p align="center">
-  <img src="public/screenshots/home.png" width="200" />
-  <img src="public/screenshots/play.png" width="200" />
-  <img src="public/screenshots/analysis.png" width="200" />
-  <img src="public/screenshots/generator.png" width="200" />
-</p>
+| Home | Play | Analysis | Generator |
+|------|------|----------|-----------|
+| ![Home](public/screenshots/home.png) | ![Play](public/screenshots/play.png) | ![Analysis](public/screenshots/analysis.png) | ![Generator](public/screenshots/generator.png) |
 
 ## Features
 

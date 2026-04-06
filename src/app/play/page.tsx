@@ -10,7 +10,7 @@ import fullStory from '@/data/full-story';
 import { GameStats, EncounteredTactic, GameState, PUA_TACTICS, Story } from '@/types/chat';
 import { getEndingInfo } from '@/lib/game-engine';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 
 const endingColors: Record<string, string> = {
@@ -189,14 +189,14 @@ export default function PlayPage() {
                   <RotateCcw className="size-4" />
                   重新开始
                 </Button>
-                <Button variant="outline" className="w-full rounded-full gap-2" render={<Link href="/analysis" />}>
+                <Link href="/analysis" className={buttonVariants({ variant: 'outline', className: 'w-full rounded-full gap-2' })}>
                   <BookOpen className="size-4" />
                   查看PUA手法解析
-                </Button>
-                <Button variant="ghost" className="w-full rounded-full text-muted-foreground gap-2" render={<Link href="/" />}>
+                </Link>
+                <Link href="/" className={buttonVariants({ variant: 'ghost', className: 'w-full rounded-full text-muted-foreground gap-2' })}>
                   <Home className="size-4" />
                   返回主页
-                </Button>
+                </Link>
               </div>
             </>
           )}

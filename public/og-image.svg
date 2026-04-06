@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" fill="none">
-  <rect width="1200" height="630" fill="#000"/>
-  <!-- Logo mark -->
-  <path d="M480 200h240c17.7 0 32 14.3 32 32v128c0 17.7-14.3 32-32 32H592l-64 48v-48h-48c-17.7 0-32-14.3-32-32V232c0-17.7 14.3-32 32-32z" stroke="#fff" stroke-width="10" fill="none" stroke-linejoin="round"/>
-  <text x="600" y="340" text-anchor="middle" font-family="Inter, -apple-system, sans-serif" font-size="80" font-weight="800" fill="#fff">?!</text>
-  <!-- Title -->
-  <text x="600" y="500" text-anchor="middle" font-family="Inter, -apple-system, sans-serif" font-size="36" font-weight="700" fill="#fff">PUA话术识别 — 聊天模拟器</text>
-  <text x="600" y="545" text-anchor="middle" font-family="Inter, -apple-system, sans-serif" font-size="20" fill="#666">pua-what-game</text>
-</svg>

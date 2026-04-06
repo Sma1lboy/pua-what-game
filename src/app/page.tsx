@@ -10,7 +10,7 @@ import {
   Target,
 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 
 const features = [
@@ -67,15 +67,15 @@ export default function Home() {
 
         {/* Action buttons */}
         <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto animate-slideUp">
-          <Button size="lg" render={<Link href="/play" />}>
+          <Link href="/play" className={buttonVariants({ size: 'lg' })}>
             开始游戏
-          </Button>
-          <Button variant="outline" size="lg" render={<Link href="/analysis" />}>
+          </Link>
+          <Link href="/analysis" className={buttonVariants({ variant: 'outline', size: 'lg' })}>
             查看PUA手法解析
-          </Button>
-          <Button variant="outline" size="lg" render={<Link href="/generator" />}>
+          </Link>
+          <Link href="/generator" className={buttonVariants({ variant: 'outline', size: 'lg' })}>
             LLM一键生成剧情
-          </Button>
+          </Link>
         </div>
       </div>
     </main>

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Copy, Check, Play } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Story } from '@/types/chat';
 
@@ -148,10 +148,10 @@ export default function GeneratorPage() {
     <main className="min-h-screen bg-background px-4 py-12">
       <div className="max-w-2xl mx-auto">
         {/* Back link */}
-        <Button variant="ghost" size="sm" render={<Link href="/" />} className="mb-8 text-muted-foreground">
+        <Link href="/" className={buttonVariants({ variant: 'ghost', size: 'sm', className: 'mb-8 text-muted-foreground' })}>
           <ArrowLeft className="size-4" />
           返回主页
-        </Button>
+        </Link>
 
         {/* Header */}
         <div className="text-center mb-10 animate-fadeIn">
