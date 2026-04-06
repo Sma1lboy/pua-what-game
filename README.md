@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="public/logo.png" width="128" />
+</p>
+
 # PUA话术识别 — 聊天模拟器
 
 An interactive WeChat-style chat simulator that teaches you to recognize 9 common PUA (Pick-Up Artist) manipulation tactics through immersive storytelling.
