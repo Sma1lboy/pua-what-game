@@ -142,22 +142,22 @@ export default function GeneratorPage() {
 
   return (
     <main
-      className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 px-4 py-12"
-      style={{ fontFamily: '"PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif' }}
+      className="min-h-screen bg-white px-4 py-12"
+      style={{ fontFamily: 'Inter, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif' }}
     >
       <div className="max-w-2xl mx-auto">
         {/* Back link */}
         <Link
           href="/"
-          className="inline-flex items-center gap-1 text-purple-400 hover:text-purple-300 text-sm mb-8 transition-colors"
+          className="inline-flex items-center gap-1 text-gray-400 hover:text-gray-600 text-sm mb-8 transition-colors"
         >
           ← 返回主页
         </Link>
 
         {/* Header */}
         <div className="text-center mb-10 animate-fadeIn">
-          <h1 className="text-3xl font-bold text-white mb-3">LLM 剧情生成器</h1>
-          <p className="text-gray-400 text-sm leading-relaxed max-w-md mx-auto">
+          <h1 className="text-3xl font-bold text-gray-900 mb-3">LLM 剧情生成器</h1>
+          <p className="text-gray-500 text-sm leading-relaxed max-w-md mx-auto">
             使用任意LLM（如ChatGPT、Claude）生成自定义剧情，然后导入游戏体验
           </p>
         </div>
@@ -165,22 +165,22 @@ export default function GeneratorPage() {
         {/* Step 1: Copy prompt */}
         <div className="space-y-4 mb-10 animate-slideUp">
           <div className="flex items-center gap-3">
-            <span className="shrink-0 w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center text-white font-bold text-sm">1</span>
-            <h2 className="text-white font-bold text-lg">复制Prompt到LLM</h2>
+            <span className="shrink-0 w-8 h-8 bg-gray-900 rounded-full flex items-center justify-center text-white font-bold text-sm">1</span>
+            <h2 className="text-gray-900 font-bold text-lg">复制Prompt到LLM</h2>
           </div>
 
-          <div className="bg-white/5 border border-purple-500/20 rounded-xl p-4 max-h-64 overflow-y-auto scrollbar-hide">
-            <pre className="text-gray-300 text-xs leading-relaxed whitespace-pre-wrap break-words">
+          <div className="bg-gray-50 border border-gray-200 rounded-2xl p-4 max-h-64 overflow-y-auto scrollbar-hide">
+            <pre className="text-gray-600 text-xs leading-relaxed whitespace-pre-wrap break-words">
               {LLM_PROMPT}
             </pre>
           </div>
 
           <button
             onClick={handleCopy}
-            className={`w-full py-3 rounded-xl font-medium transition-all ${
+            className={`w-full py-3 rounded-full font-medium transition-all ${
               copied
                 ? 'bg-green-600 text-white'
-                : 'bg-purple-600 hover:bg-purple-500 text-white'
+                : 'bg-gray-900 hover:bg-gray-800 text-white'
             }`}
           >
             {copied ? '✓ 已复制到剪贴板' : '一键复制Prompt'}
@@ -190,11 +190,11 @@ export default function GeneratorPage() {
         {/* Step 2: Import JSON */}
         <div className="space-y-4 animate-slideUp">
           <div className="flex items-center gap-3">
-            <span className="shrink-0 w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center text-white font-bold text-sm">2</span>
-            <h2 className="text-white font-bold text-lg">粘贴生成的JSON</h2>
+            <span className="shrink-0 w-8 h-8 bg-gray-900 rounded-full flex items-center justify-center text-white font-bold text-sm">2</span>
+            <h2 className="text-gray-900 font-bold text-lg">粘贴生成的JSON</h2>
           </div>
 
-          <p className="text-gray-400 text-sm">
+          <p className="text-gray-500 text-sm">
             将LLM生成的JSON粘贴到下方，点击导入即可开始游戏
           </p>
 
@@ -202,11 +202,11 @@ export default function GeneratorPage() {
             value={jsonInput}
             onChange={(e) => { setJsonInput(e.target.value); setError(''); }}
             placeholder='将LLM生成的完整JSON粘贴到这里...'
-            className="w-full h-48 bg-white/5 border border-purple-500/20 rounded-xl p-4 text-gray-300 text-sm font-mono placeholder-gray-600 resize-none focus:outline-none focus:border-purple-400/50 transition-colors"
+            className="w-full h-48 bg-gray-50 border border-gray-200 rounded-2xl p-4 text-gray-700 text-sm font-mono placeholder-gray-400 resize-none focus:outline-none focus:border-gray-400 focus:ring-1 focus:ring-gray-200 transition-colors"
           />
 
           {error && (
-            <div className="bg-red-900/30 border border-red-500/30 rounded-xl px-4 py-3 text-red-300 text-sm">
+            <div className="bg-red-50 border border-red-200 rounded-2xl px-4 py-3 text-red-600 text-sm">
               {error}
             </div>
           )}
@@ -214,7 +214,7 @@ export default function GeneratorPage() {
           <button
             onClick={handleImport}
             disabled={!jsonInput.trim()}
-            className="w-full py-3 bg-purple-600 hover:bg-purple-500 disabled:bg-gray-700 disabled:text-gray-500 text-white font-medium rounded-xl transition-all"
+            className="w-full py-3 bg-gray-900 hover:bg-gray-800 disabled:bg-gray-200 disabled:text-gray-400 text-white font-medium rounded-full transition-all"
           >
             导入并开始游戏
           </button>

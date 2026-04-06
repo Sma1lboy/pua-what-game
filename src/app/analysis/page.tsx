@@ -112,8 +112,8 @@ function TacticCard({ tactic }: { tactic: TacticDetail }) {
 
   return (
     <div
-      className={`bg-white/5 border border-purple-500/20 rounded-xl overflow-hidden transition-all duration-300 hover:border-purple-400/40 ${
-        expanded ? 'bg-white/8' : ''
+      className={`bg-white border border-gray-200 rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-md hover:border-gray-300 ${
+        expanded ? 'shadow-sm' : ''
       }`}
     >
       <button
@@ -123,41 +123,41 @@ function TacticCard({ tactic }: { tactic: TacticDetail }) {
         <span className="text-2xl shrink-0">{tactic.emoji}</span>
         <div className="flex-1 min-w-0">
           <div className="flex items-baseline gap-2">
-            <span className="text-white font-bold">{tactic.nameCn}</span>
-            <span className="text-purple-400/70 text-sm">{tactic.nameEn}</span>
+            <span className="text-gray-900 font-bold">{tactic.nameCn}</span>
+            <span className="text-gray-400 text-sm">{tactic.nameEn}</span>
           </div>
           <p className="text-gray-400 text-xs mt-0.5 truncate">{tactic.definition}</p>
         </div>
-        <span className={`text-purple-400 transition-transform duration-300 shrink-0 ${expanded ? 'rotate-180' : ''}`}>
+        <span className={`text-gray-400 transition-transform duration-300 shrink-0 ${expanded ? 'rotate-180' : ''}`}>
           ▼
         </span>
       </button>
 
       {expanded && (
         <div className="px-5 pb-5 space-y-4 animate-fadeIn">
-          <div className="h-px bg-purple-500/20" />
+          <div className="h-px bg-gray-100" />
 
           <div className="space-y-3">
             <div>
-              <h4 className="text-purple-300 text-xs font-medium uppercase tracking-wider mb-1">定义</h4>
-              <p className="text-gray-300 text-sm leading-relaxed">{tactic.definition}</p>
+              <h4 className="text-gray-500 text-xs font-medium uppercase tracking-wider mb-1">定义</h4>
+              <p className="text-gray-700 text-sm leading-relaxed">{tactic.definition}</p>
             </div>
 
             <div>
-              <h4 className="text-purple-300 text-xs font-medium uppercase tracking-wider mb-1">例子</h4>
-              <p className="text-gray-300 text-sm leading-relaxed bg-white/5 rounded-lg px-3 py-2 border-l-2 border-purple-500/50">
+              <h4 className="text-gray-500 text-xs font-medium uppercase tracking-wider mb-1">例子</h4>
+              <p className="text-gray-700 text-sm leading-relaxed bg-gray-50 rounded-xl px-3 py-2 border-l-2 border-gray-300">
                 {tactic.example}
               </p>
             </div>
 
             <div>
-              <h4 className="text-amber-300 text-xs font-medium uppercase tracking-wider mb-1">🔍 如何识别</h4>
-              <p className="text-gray-300 text-sm leading-relaxed">{tactic.howToIdentify}</p>
+              <h4 className="text-amber-600 text-xs font-medium uppercase tracking-wider mb-1">🔍 如何识别</h4>
+              <p className="text-gray-700 text-sm leading-relaxed">{tactic.howToIdentify}</p>
             </div>
 
             <div>
-              <h4 className="text-green-300 text-xs font-medium uppercase tracking-wider mb-1">🛡️ 如何应对</h4>
-              <p className="text-gray-300 text-sm leading-relaxed">{tactic.howToRespond}</p>
+              <h4 className="text-green-600 text-xs font-medium uppercase tracking-wider mb-1">🛡️ 如何应对</h4>
+              <p className="text-gray-700 text-sm leading-relaxed">{tactic.howToRespond}</p>
             </div>
           </div>
         </div>
@@ -169,42 +169,42 @@ function TacticCard({ tactic }: { tactic: TacticDetail }) {
 export default function AnalysisPage() {
   return (
     <main
-      className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 px-4 py-12"
-      style={{ fontFamily: '"PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif' }}
+      className="min-h-screen bg-white px-4 py-12"
+      style={{ fontFamily: 'Inter, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif' }}
     >
-      <div className="max-w-2xl mx-auto">
+      <div className="max-w-3xl mx-auto">
         {/* Back link */}
         <Link
           href="/"
-          className="inline-flex items-center gap-1 text-purple-400 hover:text-purple-300 text-sm mb-8 transition-colors"
+          className="inline-flex items-center gap-1 text-gray-400 hover:text-gray-600 text-sm mb-8 transition-colors"
         >
           ← 返回主页
         </Link>
 
         {/* Header */}
         <div className="text-center mb-10 animate-fadeIn">
-          <h1 className="text-3xl font-bold text-white mb-3">PUA手法解析</h1>
-          <p className="text-gray-400 text-sm leading-relaxed max-w-md mx-auto">
+          <h1 className="text-3xl font-bold text-gray-900 mb-3">PUA手法解析</h1>
+          <p className="text-gray-500 text-sm leading-relaxed max-w-md mx-auto">
             了解常见的9种PUA操控手法，学会识别和应对，保护自己和身边的人
           </p>
         </div>
 
-        {/* Tactic cards */}
-        <div className="space-y-3 animate-slideUp">
+        {/* Tactic cards — grid layout */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 animate-slideUp">
           {tactics.map((tactic) => (
             <TacticCard key={tactic.id} tactic={tactic} />
           ))}
         </div>
 
         {/* Bottom CTA */}
-        <div className="text-center mt-10 space-y-3">
+        <div className="text-center mt-12 space-y-3">
           <Link
             href="/play"
-            className="inline-block px-8 py-3 bg-purple-600 hover:bg-purple-500 text-white font-bold rounded-xl transition-colors shadow-lg shadow-purple-900/50"
+            className="inline-block px-8 py-3 bg-gray-900 hover:bg-gray-800 text-white font-semibold rounded-full transition-colors shadow-sm"
           >
             开始游戏，实战练习
           </Link>
-          <p className="text-gray-500 text-xs">通过互动游戏体验，更深刻地理解这些操控手法</p>
+          <p className="text-gray-400 text-xs">通过互动游戏体验，更深刻地理解这些操控手法</p>
         </div>
       </div>
     </main>
